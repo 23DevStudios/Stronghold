@@ -2,7 +2,8 @@
 //  StrongholdApp.swift
 //  Stronghold
 //
-//  Created by Pawan Harikrishnan on 4/11/26.
+//  App entry point. Configures SwiftData and launches the root view.
+//  As we add @Model types, register them in the schema array below.
 //
 
 import SwiftUI
@@ -11,9 +12,9 @@ import SwiftData
 @main
 struct StrongholdApp: App {
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
+        // Register all SwiftData models here as we create them.
+        // Example: Schema([CharacterProfile.self, Quest.self])
+        let schema = Schema([CharacterProfile.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {

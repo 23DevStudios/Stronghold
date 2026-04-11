@@ -2,60 +2,31 @@
 //  ContentView.swift
 //  Stronghold
 //
-//  Created by Pawan Harikrishnan on 4/11/26.
+//  Root view. Decides whether to show onboarding or the main app
+//  based on whether a CharacterProfile exists in the database.
 //
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+
+    // @Query fetches all CharacterProfile records from SwiftData.
+    // It stays live — if a profile gets inserted, this updates automatically.
+    @Query private var profiles: [CharacterProfile]
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+        if profiles.isEmpty {
+            // No character yet — send them through onboarding
+            OnboardingView()
+        } else {
+            // Character exists — show the dashboard
+            DashboardView(profile: profiles[0])
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: CharacterProfile.self, inMemory: true)
 }
