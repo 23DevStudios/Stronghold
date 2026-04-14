@@ -20,7 +20,7 @@ struct ContentView: View {
             // No character yet — send them through onboarding
             OnboardingView()
         } else {
-            // Character exists — show the dashboard
+            // Character exists — show the dashboard∞
             DashboardView(profile: profiles[0])
         }
     }
