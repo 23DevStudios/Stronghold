@@ -28,6 +28,9 @@ final class CharacterProfile {
     // MARK: - Progression
     var level: Int
     var currentXP: Int
+    
+    // MARK: - Quest Completion
+    var completedQuestIDs: Set<UUID> = []
 
     // MARK: - Meta
     var createdAt: Date
